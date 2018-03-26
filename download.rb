@@ -1,21 +1,8 @@
-require 'slack'
 require 'mongo'
+require './client'
 
-Slack.configure do |config|
-  config.token = ENV['SLACK_HISTORY_DOWNLOADER']
-end
-
-client = Slack::Client.new
-channel = client.channels_list['channels'].map { |i| [i['name'], i['id']] }.to_h
-history = client.channels_history(channel: channel['general'])
-
-messages = []
-if history['ok']
-  messages = history['messages']
-else
-  puts 'fail to get history'
-  exit(0)
-end
+slack_client = Client.new
+messages = slack_client.get_channel_history('general')
 
 client = Mongo::Client.new 'mongodb://127.0.0.1:27017/slack'
 collection = client[:history]
