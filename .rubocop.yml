@@ -1,0 +1,12 @@
+Style/Documentation:
+  Enabled: false
+Style/LineLength:
+  Enabled: false
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+Metrics/MethodLength:
+  Max: 20
+Metrics/AbcSize:
+  Max: 24
+Layout/SpaceInsideBlockBraces:
+  SpaceBeforeBlockParameters: false

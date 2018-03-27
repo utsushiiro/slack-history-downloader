@@ -15,7 +15,7 @@ class Store
     stored_timestamps = @history_collection.find
                           .sort(ts: -1)
                           .projection(ts: 1, _id: 0)
-                          .map { |i| i['ts'] }
+                          .map {|i| i['ts'] }
     messages.each do |message|
       new_messages << message unless message_stored?(message, stored_timestamps)
     end

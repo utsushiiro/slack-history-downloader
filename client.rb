@@ -7,7 +7,7 @@ class Client
   def initialize
     @client = Slack::Client.new token: ENV['SLACK_HISTORY_DOWNLOADER']
     @channel_list = @client.channels_list['channels']
-    @channel_name_to_id_table = @channel_list.map { |i| [i['name'], i['id']] }.to_h
+    @channel_name_to_id_table = @channel_list.map {|i| [i['name'], i['id']] }.to_h
   end
 
   def get_channel_history(channel_name)
