@@ -27,7 +27,7 @@ class Client
       break unless history['has_more'] && page < MAX_HISTORY_PAGE_NUM
     end
 
-    message_stack
+    message_stack.flatten
   end
 
   def check_history_response(history)
