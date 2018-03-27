@@ -13,13 +13,9 @@ class Client
   def get_channel_history(channel_name)
     channel_id = @channel_name_to_id_table[channel_name]
     history = @client.channels_history(channel: channel_id, count: HISTORY_PAGE_SIZE)
+    check_history_response(history)
     message_stack = history['messages']
     page = 1
-
-    unless history['ok']
-      puts 'fail to get history'
-      exit(0)
-    end
 
     while history['has_more']
       break if page > MAX_HISTORY_PAGE_NUM
@@ -31,10 +27,17 @@ class Client
       end
 
       history = @client.channels_history(channel: channel_id, latest: oldest, count: HISTORY_PAGE_SIZE)
+      check_history_response(history)
       message_stack.push(history['messages'])
       page += 1
     end
 
     message_stack
+  end
+
+  def check_history_response(history)
+    return if history['ok']
+    puts 'fail to get history'
+    exit(0)
   end
 end
