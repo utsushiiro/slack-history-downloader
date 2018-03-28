@@ -1,14 +1,15 @@
 require 'mongo'
 
 class Store
-  def initialize
+  def initialize(logger)
+    @logger = logger
     @client = Mongo::Client.new 'mongodb://127.0.0.1:27017/slack'
     @history_collection = @client[:history]
   end
 
   def update_channel_history(history)
     collection_name = "channel-history:#{history[:channel_name]}"
-    puts "update #{collection_name}"
+    @logger.info("update #{collection_name}")
     collection = @client[collection_name.to_s]
     collection.insert_many(get_not_stored_messages(collection, history))
   end

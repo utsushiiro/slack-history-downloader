@@ -2,8 +2,9 @@ require 'mongo'
 require './client'
 require './store'
 
-slack_client = Client.new
-store = Store.new
+logger = Logger.new(STDOUT)
+slack_client = Client.new logger
+store = Store.new logger
 
 all_channel_names = slack_client.channel_list.map {|i| i['name'] }
 all_channel_names.each do |channel_name|

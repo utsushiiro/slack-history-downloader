@@ -6,7 +6,8 @@ class Client
 
   attr_reader :channel_list
 
-  def initialize
+  def initialize(logger)
+    @logger = logger
     @client = Slack::Client.new token: ENV['SLACK_HISTORY_DOWNLOADER']
     @channel_list = @client.channels_list['channels']
     @channel_name_to_id_table = @channel_list.map {|i| [i['name'], i['id']] }.to_h
@@ -34,6 +35,7 @@ class Client
 
   def check_history_response(history)
     return if history['ok']
+    @logger.error('fail to get channel history')
     warn 'fail to get history'
     exit(0)
   end
