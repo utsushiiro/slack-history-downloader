@@ -4,6 +4,8 @@ class Client
   HISTORY_PAGE_SIZE = 1000
   MAX_HISTORY_PAGE_NUM = 10
 
+  attr_reader :channel_list
+
   def initialize
     @client = Slack::Client.new token: ENV['SLACK_HISTORY_DOWNLOADER']
     @channel_list = @client.channels_list['channels']
