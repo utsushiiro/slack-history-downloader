@@ -10,25 +10,18 @@ class Store
     collection_name = "channel-history:#{history[:channel_name]}"
     puts "update #{collection_name}"
     collection = @client[collection_name.to_s]
-    collection.insert_many(get_new_messages(collection, history))
+    collection.insert_many(get_not_stored_messages(collection, history))
   end
 
-  def get_new_messages(collection, history)
-    new_messages = []
+  def get_not_stored_messages(collection, history)
+    not_stored_messages = []
     stored_timestamps = collection.find
                           .sort(ts: -1)
                           .projection(ts: 1, _id: 0)
                           .map {|i| i['ts'] }
     history[:messages].each do |message|
-      new_messages << message unless message_stored?(message, stored_timestamps)
+      not_stored_messages << message unless stored_timestamps.include?(message['ts'])
     end
-    new_messages
-  end
-
-  def message_stored?(message, stored_timestamps)
-    stored_timestamps.each do |stored_timestamp|
-      return true if message['ts'] == stored_timestamp
-    end
-    false
+    not_stored_messages
   end
 end
