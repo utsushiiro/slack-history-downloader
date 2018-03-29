@@ -9,7 +9,7 @@ class Store
 
   def update_channel_history(history)
     collection_name = "channel-history:#{history[:channel_name]}"
-    @logger.info("update #{collection_name}")
+    @logger.info "update #{collection_name}"
     collection = @client[collection_name.to_s]
     collection.insert_many(get_not_stored_messages(collection, history))
   end

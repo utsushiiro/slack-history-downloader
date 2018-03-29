@@ -35,7 +35,7 @@ class Client
 
   def check_history_response(history)
     return if history['ok']
-    @logger.error('fail to get channel history')
+    @logger.error 'fail to get channel history'
     warn 'fail to get history'
     exit(0)
   end
